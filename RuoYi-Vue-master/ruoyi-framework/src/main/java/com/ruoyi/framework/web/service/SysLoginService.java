@@ -67,7 +67,7 @@ public class SysLoginService
         // 登录前置校验
         loginPreCheck(username, password);
         // 用户验证
-        Authentication authentication = null;
+         Authentication authentication = null;
         try
         {
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);

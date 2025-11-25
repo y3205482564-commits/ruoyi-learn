@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.TaskAssignmentMapper">
+    
+    <resultMap type="TaskAssignment" id="TaskAssignmentResult">
+        <result property="assignmentId"    column="assignment_id"    />
+        <result property="taskId"    column="task_id"    />
+        <result property="assignerId"    column="assigner_id"    />
+        <result property="assigneeType"    column="assignee_type"    />
+        <result property="assigneeId"    column="assignee_id"    />
+        <result property="assignmentTime"    column="assignment_time"    />
+        <result property="deadline"    column="deadline"    />
+        <result property="instructions"    column="instructions"    />
+        <result property="status"    column="status"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectTaskAssignmentVo">
+        select assignment_id, task_id, assigner_id, assignee_type, assignee_id, assignment_time, deadline, instructions, status, create_by, create_time, update_by, update_time from task_assignment
+    </sql>
+
+    <select id="selectTaskAssignmentList" parameterType="TaskAssignment" resultMap="TaskAssignmentResult">
+        <include refid="selectTaskAssignmentVo"/>
+        <where>  
+            <if test="taskId != null "> and task_id = #{taskId}</if>
+            <if test="assignerId != null "> and assigner_id = #{assignerId}</if>
+            <if test="assigneeType != null  and assigneeType != ''"> and assignee_type = #{assigneeType}</if>
+            <if test="assigneeId != null "> and assignee_id = #{assigneeId}</if>
+            <if test="assignmentTime != null "> and assignment_time = #{assignmentTime}</if>
+            <if test="deadline != null "> and deadline = #{deadline}</if>
+            <if test="instructions != null  and instructions != ''"> and instructions = #{instructions}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectTaskAssignmentByAssignmentId" parameterType="Long" resultMap="TaskAssignmentResult">
+        <include refid="selectTaskAssignmentVo"/>
+        where assignment_id = #{assignmentId}
+    </select>
+
+    <insert id="insertTaskAssignment" parameterType="TaskAssignment" useGeneratedKeys="true" keyProperty="assignmentId">
+        insert into task_assignment
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="taskId != null">task_id,</if>
+            <if test="assignerId != null">assigner_id,</if>
+            <if test="assigneeType != null">assignee_type,</if>
+            <if test="assigneeId != null">assignee_id,</if>
+            <if test="assignmentTime != null">assignment_time,</if>
+            <if test="deadline != null">deadline,</if>
+            <if test="instructions != null">instructions,</if>
+            <if test="status != null">status,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="taskId != null">#{taskId},</if>
+            <if test="assignerId != null">#{assignerId},</if>
+            <if test="assigneeType != null">#{assigneeType},</if>
+            <if test="assigneeId != null">#{assigneeId},</if>
+            <if test="assignmentTime != null">#{assignmentTime},</if>
+            <if test="deadline != null">#{deadline},</if>
+            <if test="instructions != null">#{instructions},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTaskAssignment" parameterType="TaskAssignment">
+        update task_assignment
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="taskId != null">task_id = #{taskId},</if>
+            <if test="assignerId != null">assigner_id = #{assignerId},</if>
+            <if test="assigneeType != null">assignee_type = #{assigneeType},</if>
+            <if test="assigneeId != null">assignee_id = #{assigneeId},</if>
+            <if test="assignmentTime != null">assignment_time = #{assignmentTime},</if>
+            <if test="deadline != null">deadline = #{deadline},</if>
+            <if test="instructions != null">instructions = #{instructions},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where assignment_id = #{assignmentId}
+    </update>
+
+    <delete id="deleteTaskAssignmentByAssignmentId" parameterType="Long">
+        delete from task_assignment where assignment_id = #{assignmentId}
+    </delete>
+
+    <delete id="deleteTaskAssignmentByAssignmentIds" parameterType="String">
+        delete from task_assignment where assignment_id in 
+        <foreach item="assignmentId" collection="array" open="(" separator="," close=")">
+            #{assignmentId}
+        </foreach>
+    </delete>
+</mapper>
