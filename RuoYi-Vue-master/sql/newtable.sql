@@ -161,3 +161,126 @@ CREATE TABLE task_execution (
                                 KEY idx_user_id (user_id),
                                 KEY idx_time (start_time, end_time)
 ) ENGINE=INNODB AUTO_INCREMENT=1 COMMENT = '任务执行记录表';
+
+-- ----------------------------
+-- 20、班组信息表
+-- ----------------------------
+DROP TABLE IF EXISTS sys_team;
+CREATE TABLE sys_team (
+                          team_id           BIGINT(20)      NOT NULL AUTO_INCREMENT    COMMENT '班组ID',
+                          team_name         VARCHAR(100)    NOT NULL                   COMMENT '班组名称',
+                          team_code         VARCHAR(50)     NOT NULL                   COMMENT '班组编码',
+                          dept_id           BIGINT(20)      DEFAULT NULL               COMMENT '所属部门ID',
+                          team_leader       BIGINT(20)      DEFAULT NULL               COMMENT '班组长用户ID',
+                          description       VARCHAR(500)    DEFAULT ''                 COMMENT '班组描述',
+                          contact_info      VARCHAR(100)    DEFAULT ''                 COMMENT '联系方式',
+                          status            CHAR(1)         DEFAULT '0'                COMMENT '状态（0正常 1停用）',
+                          del_flag          CHAR(1)         DEFAULT '0'                COMMENT '删除标志（0存在 2删除）',
+                          create_by         VARCHAR(64)     DEFAULT ''                 COMMENT '创建者',
+                          create_time       DATETIME                                  COMMENT '创建时间',
+                          update_by         VARCHAR(64)     DEFAULT ''                 COMMENT '更新者',
+                          update_time       DATETIME                                  COMMENT '更新时间',
+                          remark            VARCHAR(500)    DEFAULT NULL               COMMENT '备注',
+                          PRIMARY KEY (team_id),
+                          UNIQUE KEY idx_team_code (team_code),
+                          KEY idx_dept_id (dept_id),
+                          KEY idx_team_leader (team_leader)
+) ENGINE=INNODB AUTO_INCREMENT=1 COMMENT = '班组信息表';
+
+-- ----------------------------
+-- 21、班组成员关联表
+-- ----------------------------
+DROP TABLE IF EXISTS sys_team_member;
+CREATE TABLE sys_team_member (
+                                 id                BIGINT(20)      NOT NULL AUTO_INCREMENT    COMMENT '主键ID',
+                                 team_id           BIGINT(20)      NOT NULL                   COMMENT '班组ID',
+                                 user_id           BIGINT(20)      NOT NULL                   COMMENT '用户ID',
+                                 member_role       VARCHAR(20)     DEFAULT 'member'           COMMENT '成员角色（leader:班组长 admin:班组管理员 member:普通成员）',
+                                 join_time         DATETIME                                  COMMENT '加入时间',
+                                 status            CHAR(1)         DEFAULT '0'                COMMENT '状态（0正常 1停用）',
+                                 create_by         VARCHAR(64)     DEFAULT ''                 COMMENT '创建者',
+                                 create_time       DATETIME                                  COMMENT '创建时间',
+                                 update_by         VARCHAR(64)     DEFAULT ''                 COMMENT '更新者',
+                                 update_time       DATETIME                                  COMMENT '更新时间',
+                                 PRIMARY KEY (id),
+                                 UNIQUE KEY idx_team_user (team_id, user_id),
+                                 KEY idx_user_id (user_id)
+) ENGINE=INNODB AUTO_INCREMENT=1 COMMENT = '班组成员关联表';
+-- ----------------------------
+-- 24、空间区域表
+-- ----------------------------
+DROP TABLE IF EXISTS space_area;
+CREATE TABLE space_area (
+                            area_id           BIGINT(20)      NOT NULL AUTO_INCREMENT    COMMENT '区域ID',
+                            area_code         VARCHAR(50)     NOT NULL                   COMMENT '区域编码',
+                            area_name         VARCHAR(100)    NOT NULL                   COMMENT '区域名称',
+                            parent_id         BIGINT(20)      DEFAULT 0                  COMMENT '父区域ID',
+                            ancestors         VARCHAR(500)    DEFAULT ''                 COMMENT '祖级列表',
+                            area_type         VARCHAR(50)     DEFAULT ''                 COMMENT '区域类型（building:建筑 floor:楼层 room:房间 area:区域）',
+
+    -- 位置信息
+                            location          VARCHAR(500)    DEFAULT ''                 COMMENT '具体位置',
+                            coordinates       VARCHAR(500)    DEFAULT ''                 COMMENT '坐标信息',
+                            area_size         DECIMAL(10,2)   DEFAULT 0.00              COMMENT '区域面积',
+
+    -- 管理信息
+                            manager_id        BIGINT(20)      DEFAULT NULL               COMMENT '负责人用户ID',
+                            dept_id           BIGINT(20)      DEFAULT NULL               COMMENT '负责部门ID',
+
+    -- 状态信息
+                            status            CHAR(1)         DEFAULT '0'               COMMENT '状态（0正常 1停用）',
+                            order_num         INT             DEFAULT 0                 COMMENT '显示顺序',
+
+                            description       VARCHAR(500)    DEFAULT ''                COMMENT '区域描述',
+                            del_flag          CHAR(1)         DEFAULT '0'               COMMENT '删除标志（0存在 2删除）',
+                            create_by         VARCHAR(64)     DEFAULT ''                COMMENT '创建者',
+                            create_time       DATETIME                                 COMMENT '创建时间',
+                            update_by         VARCHAR(64)     DEFAULT ''                COMMENT '更新者',
+                            update_time       DATETIME                                 COMMENT '更新时间',
+                            remark            VARCHAR(500)    DEFAULT NULL              COMMENT '备注',
+                            PRIMARY KEY (area_id),
+                            UNIQUE KEY idx_area_code (area_code),
+                            KEY idx_parent_id (parent_id),
+                            KEY idx_area_type (area_type)
+) ENGINE=INNODB AUTO_INCREMENT=1 COMMENT = '空间区域表';
+
+-- ----------------------------
+-- 25、空间设备表
+-- ----------------------------
+DROP TABLE IF EXISTS space_equipment;
+CREATE TABLE space_equipment (
+                                 equipment_id      BIGINT(20)      NOT NULL AUTO_INCREMENT    COMMENT '设备ID',
+                                 equipment_code    VARCHAR(50)     NOT NULL                   COMMENT '设备编码',
+                                 equipment_name    VARCHAR(200)    NOT NULL                   COMMENT '设备名称',
+                                 equipment_type    VARCHAR(50)     DEFAULT ''                 COMMENT '设备类型',
+                                 area_id           BIGINT(20)      DEFAULT NULL               COMMENT '所在区域ID',
+
+    -- 设备信息
+                                 model             VARCHAR(100)    DEFAULT ''                 COMMENT '设备型号',
+                                 specification     VARCHAR(500)    DEFAULT ''                 COMMENT '规格参数',
+                                 manufacturer      VARCHAR(100)    DEFAULT ''                 COMMENT '生产厂家',
+                                 install_date      DATE                                      COMMENT '安装日期',
+
+    -- 状态信息
+                                 status            VARCHAR(20)     DEFAULT 'normal'          COMMENT '状态（normal:正常 maintenance:维修中 fault:故障 scrapped:报废）',
+                                 maintenance_cycle INT             DEFAULT 0                 COMMENT '保养周期（天）',
+                                 last_maintenance_date DATE                                COMMENT '上次保养日期',
+                                 next_maintenance_date DATE                                COMMENT '下次保养日期',
+
+    -- 管理信息
+                                 manager_id        BIGINT(20)      DEFAULT NULL               COMMENT '负责人用户ID',
+                                 team_id           BIGINT(20)      DEFAULT NULL               COMMENT '负责班组ID',
+
+                                 description       VARCHAR(500)    DEFAULT ''                COMMENT '设备描述',
+                                 del_flag          CHAR(1)         DEFAULT '0'               COMMENT '删除标志（0存在 2删除）',
+                                 create_by         VARCHAR(64)     DEFAULT ''                COMMENT '创建者',
+                                 create_time       DATETIME                                 COMMENT '创建时间',
+                                 update_by         VARCHAR(64)     DEFAULT ''                COMMENT '更新者',
+                                 update_time       DATETIME                                 COMMENT '更新时间',
+                                 remark            VARCHAR(500)    DEFAULT NULL              COMMENT '备注',
+                                 PRIMARY KEY (equipment_id),
+                                 UNIQUE KEY idx_equipment_code (equipment_code),
+                                 KEY idx_area_id (area_id),
+                                 KEY idx_team_id (team_id),
+                                 KEY idx_status (status)
+) ENGINE=INNODB AUTO_INCREMENT=1 COMMENT = '空间设备表';

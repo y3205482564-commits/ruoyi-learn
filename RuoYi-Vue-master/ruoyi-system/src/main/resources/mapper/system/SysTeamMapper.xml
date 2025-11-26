@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SysTeamMapper">
+    
+    <resultMap type="SysTeam" id="SysTeamResult">
+        <result property="teamId"    column="team_id"    />
+        <result property="teamName"    column="team_name"    />
+        <result property="teamCode"    column="team_code"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="teamLeader"    column="team_leader"    />
+        <result property="description"    column="description"    />
+        <result property="contactInfo"    column="contact_info"    />
+        <result property="status"    column="status"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectSysTeamVo">
+        select team_id, team_name, team_code, dept_id, team_leader, description, contact_info, status, del_flag, create_by, create_time, update_by, update_time, remark from sys_team
+    </sql>
+
+    <select id="selectSysTeamList" parameterType="SysTeam" resultMap="SysTeamResult">
+        <include refid="selectSysTeamVo"/>
+        <where>  
+            <if test="teamName != null  and teamName != ''"> and team_name like concat('%', #{teamName}, '%')</if>
+            <if test="teamCode != null  and teamCode != ''"> and team_code = #{teamCode}</if>
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="teamLeader != null "> and team_leader = #{teamLeader}</if>
+            <if test="description != null  and description != ''"> and description = #{description}</if>
+            <if test="contactInfo != null  and contactInfo != ''"> and contact_info = #{contactInfo}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectSysTeamByTeamId" parameterType="Long" resultMap="SysTeamResult">
+        <include refid="selectSysTeamVo"/>
+        where team_id = #{teamId}
+    </select>
+
+    <insert id="insertSysTeam" parameterType="SysTeam" useGeneratedKeys="true" keyProperty="teamId">
+        insert into sys_team
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="teamName != null and teamName != ''">team_name,</if>
+            <if test="teamCode != null and teamCode != ''">team_code,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="teamLeader != null">team_leader,</if>
+            <if test="description != null">description,</if>
+            <if test="contactInfo != null">contact_info,</if>
+            <if test="status != null">status,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="teamName != null and teamName != ''">#{teamName},</if>
+            <if test="teamCode != null and teamCode != ''">#{teamCode},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="teamLeader != null">#{teamLeader},</if>
+            <if test="description != null">#{description},</if>
+            <if test="contactInfo != null">#{contactInfo},</if>
+            <if test="status != null">#{status},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysTeam" parameterType="SysTeam">
+        update sys_team
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="teamName != null and teamName != ''">team_name = #{teamName},</if>
+            <if test="teamCode != null and teamCode != ''">team_code = #{teamCode},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="teamLeader != null">team_leader = #{teamLeader},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="contactInfo != null">contact_info = #{contactInfo},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where team_id = #{teamId}
+    </update>
+
+    <delete id="deleteSysTeamByTeamId" parameterType="Long">
+        delete from sys_team where team_id = #{teamId}
+    </delete>
+
+    <delete id="deleteSysTeamByTeamIds" parameterType="String">
+        delete from sys_team where team_id in 
+        <foreach item="teamId" collection="array" open="(" separator="," close=")">
+            #{teamId}
+        </foreach>
+    </delete>
+</mapper>
