@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SpaceAreaMapper">
+    
+    <resultMap type="SpaceArea" id="SpaceAreaResult">
+        <result property="areaId"    column="area_id"    />
+        <result property="areaCode"    column="area_code"    />
+        <result property="areaName"    column="area_name"    />
+        <result property="parentId"    column="parent_id"    />
+        <result property="ancestors"    column="ancestors"    />
+        <result property="areaType"    column="area_type"    />
+        <result property="location"    column="location"    />
+        <result property="coordinates"    column="coordinates"    />
+        <result property="areaSize"    column="area_size"    />
+        <result property="managerId"    column="manager_id"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="status"    column="status"    />
+        <result property="orderNum"    column="order_num"    />
+        <result property="description"    column="description"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectSpaceAreaVo">
+        select area_id, area_code, area_name, parent_id, ancestors, area_type, location, coordinates, area_size, manager_id, dept_id, status, order_num, description, del_flag, create_by, create_time, update_by, update_time, remark from space_area
+    </sql>
+
+    <select id="selectSpaceAreaList" parameterType="SpaceArea" resultMap="SpaceAreaResult">
+        <include refid="selectSpaceAreaVo"/>
+        <where>  
+            <if test="areaCode != null  and areaCode != ''"> and area_code = #{areaCode}</if>
+            <if test="areaName != null  and areaName != ''"> and area_name like concat('%', #{areaName}, '%')</if>
+            <if test="parentId != null "> and parent_id = #{parentId}</if>
+            <if test="ancestors != null  and ancestors != ''"> and ancestors = #{ancestors}</if>
+            <if test="areaType != null  and areaType != ''"> and area_type = #{areaType}</if>
+            <if test="location != null  and location != ''"> and location = #{location}</if>
+            <if test="coordinates != null  and coordinates != ''"> and coordinates = #{coordinates}</if>
+            <if test="areaSize != null "> and area_size = #{areaSize}</if>
+            <if test="managerId != null "> and manager_id = #{managerId}</if>
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="orderNum != null "> and order_num = #{orderNum}</if>
+            <if test="description != null  and description != ''"> and description = #{description}</if>
+        </where>
+    </select>
+    
+    <select id="selectSpaceAreaByAreaId" parameterType="Long" resultMap="SpaceAreaResult">
+        <include refid="selectSpaceAreaVo"/>
+        where area_id = #{areaId}
+    </select>
+
+    <insert id="insertSpaceArea" parameterType="SpaceArea" useGeneratedKeys="true" keyProperty="areaId">
+        insert into space_area
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="areaCode != null and areaCode != ''">area_code,</if>
+            <if test="areaName != null and areaName != ''">area_name,</if>
+            <if test="parentId != null">parent_id,</if>
+            <if test="ancestors != null">ancestors,</if>
+            <if test="areaType != null">area_type,</if>
+            <if test="location != null">location,</if>
+            <if test="coordinates != null">coordinates,</if>
+            <if test="areaSize != null">area_size,</if>
+            <if test="managerId != null">manager_id,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="status != null">status,</if>
+            <if test="orderNum != null">order_num,</if>
+            <if test="description != null">description,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="areaCode != null and areaCode != ''">#{areaCode},</if>
+            <if test="areaName != null and areaName != ''">#{areaName},</if>
+            <if test="parentId != null">#{parentId},</if>
+            <if test="ancestors != null">#{ancestors},</if>
+            <if test="areaType != null">#{areaType},</if>
+            <if test="location != null">#{location},</if>
+            <if test="coordinates != null">#{coordinates},</if>
+            <if test="areaSize != null">#{areaSize},</if>
+            <if test="managerId != null">#{managerId},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="status != null">#{status},</if>
+            <if test="orderNum != null">#{orderNum},</if>
+            <if test="description != null">#{description},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSpaceArea" parameterType="SpaceArea">
+        update space_area
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="areaCode != null and areaCode != ''">area_code = #{areaCode},</if>
+            <if test="areaName != null and areaName != ''">area_name = #{areaName},</if>
+            <if test="parentId != null">parent_id = #{parentId},</if>
+            <if test="ancestors != null">ancestors = #{ancestors},</if>
+            <if test="areaType != null">area_type = #{areaType},</if>
+            <if test="location != null">location = #{location},</if>
+            <if test="coordinates != null">coordinates = #{coordinates},</if>
+            <if test="areaSize != null">area_size = #{areaSize},</if>
+            <if test="managerId != null">manager_id = #{managerId},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="orderNum != null">order_num = #{orderNum},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where area_id = #{areaId}
+    </update>
+
+    <delete id="deleteSpaceAreaByAreaId" parameterType="Long">
+        delete from space_area where area_id = #{areaId}
+    </delete>
+
+    <delete id="deleteSpaceAreaByAreaIds" parameterType="String">
+        delete from space_area where area_id in 
+        <foreach item="areaId" collection="array" open="(" separator="," close=")">
+            #{areaId}
+        </foreach>
+    </delete>
+</mapper>
