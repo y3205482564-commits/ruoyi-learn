@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.ApprovalRecordsMapper">
+    
+    <resultMap type="ApprovalRecords" id="ApprovalRecordsResult">
+        <result property="id"    column="id"    />
+        <result property="instanceId"    column="instance_id"    />
+        <result property="nodeId"    column="node_id"    />
+        <result property="taskId"    column="task_id"    />
+        <result property="approverId"    column="approver_id"    />
+        <result property="action"    column="action"    />
+        <result property="comment"    column="comment"    />
+        <result property="formSnapshot"    column="form_snapshot"    />
+        <result property="nextNodeId"    column="next_node_id"    />
+        <result property="operationTime"    column="operation_time"    />
+        <result property="ipAddress"    column="ip_address"    />
+        <result property="userAgent"    column="user_agent"    />
+    </resultMap>
+
+    <sql id="selectApprovalRecordsVo">
+        select id, instance_id, node_id, task_id, approver_id, action, comment, form_snapshot, next_node_id, operation_time, ip_address, user_agent from approval_records
+    </sql>
+
+    <select id="selectApprovalRecordsList" parameterType="ApprovalRecords" resultMap="ApprovalRecordsResult">
+        <include refid="selectApprovalRecordsVo"/>
+        <where>  
+            <if test="instanceId != null "> and instance_id = #{instanceId}</if>
+            <if test="nodeId != null "> and node_id = #{nodeId}</if>
+            <if test="taskId != null "> and task_id = #{taskId}</if>
+            <if test="approverId != null "> and approver_id = #{approverId}</if>
+            <if test="action != null  and action != ''"> and action = #{action}</if>
+            <if test="comment != null  and comment != ''"> and comment = #{comment}</if>
+            <if test="formSnapshot != null  and formSnapshot != ''"> and form_snapshot = #{formSnapshot}</if>
+            <if test="nextNodeId != null "> and next_node_id = #{nextNodeId}</if>
+            <if test="operationTime != null "> and operation_time = #{operationTime}</if>
+            <if test="ipAddress != null  and ipAddress != ''"> and ip_address = #{ipAddress}</if>
+            <if test="userAgent != null  and userAgent != ''"> and user_agent = #{userAgent}</if>
+        </where>
+    </select>
+    
+    <select id="selectApprovalRecordsById" parameterType="Long" resultMap="ApprovalRecordsResult">
+        <include refid="selectApprovalRecordsVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertApprovalRecords" parameterType="ApprovalRecords" useGeneratedKeys="true" keyProperty="id">
+        insert into approval_records
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="instanceId != null">instance_id,</if>
+            <if test="nodeId != null">node_id,</if>
+            <if test="taskId != null">task_id,</if>
+            <if test="approverId != null">approver_id,</if>
+            <if test="action != null and action != ''">action,</if>
+            <if test="comment != null">comment,</if>
+            <if test="formSnapshot != null">form_snapshot,</if>
+            <if test="nextNodeId != null">next_node_id,</if>
+            <if test="operationTime != null">operation_time,</if>
+            <if test="ipAddress != null">ip_address,</if>
+            <if test="userAgent != null">user_agent,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="instanceId != null">#{instanceId},</if>
+            <if test="nodeId != null">#{nodeId},</if>
+            <if test="taskId != null">#{taskId},</if>
+            <if test="approverId != null">#{approverId},</if>
+            <if test="action != null and action != ''">#{action},</if>
+            <if test="comment != null">#{comment},</if>
+            <if test="formSnapshot != null">#{formSnapshot},</if>
+            <if test="nextNodeId != null">#{nextNodeId},</if>
+            <if test="operationTime != null">#{operationTime},</if>
+            <if test="ipAddress != null">#{ipAddress},</if>
+            <if test="userAgent != null">#{userAgent},</if>
+         </trim>
+    </insert>
+
+    <update id="updateApprovalRecords" parameterType="ApprovalRecords">
+        update approval_records
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="instanceId != null">instance_id = #{instanceId},</if>
+            <if test="nodeId != null">node_id = #{nodeId},</if>
+            <if test="taskId != null">task_id = #{taskId},</if>
+            <if test="approverId != null">approver_id = #{approverId},</if>
+            <if test="action != null and action != ''">action = #{action},</if>
+            <if test="comment != null">comment = #{comment},</if>
+            <if test="formSnapshot != null">form_snapshot = #{formSnapshot},</if>
+            <if test="nextNodeId != null">next_node_id = #{nextNodeId},</if>
+            <if test="operationTime != null">operation_time = #{operationTime},</if>
+            <if test="ipAddress != null">ip_address = #{ipAddress},</if>
+            <if test="userAgent != null">user_agent = #{userAgent},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteApprovalRecordsById" parameterType="Long">
+        delete from approval_records where id = #{id}
+    </delete>
+
+    <delete id="deleteApprovalRecordsByIds" parameterType="String">
+        delete from approval_records where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

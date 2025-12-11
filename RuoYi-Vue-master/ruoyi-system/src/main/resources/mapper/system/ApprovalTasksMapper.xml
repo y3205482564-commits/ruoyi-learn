@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.ApprovalTasksMapper">
+    
+    <resultMap type="ApprovalTasks" id="ApprovalTasksResult">
+        <result property="id"    column="id"    />
+        <result property="instanceId"    column="instance_id"    />
+        <result property="nodeId"    column="node_id"    />
+        <result property="approverId"    column="approver_id"    />
+        <result property="approverType"    column="approver_type"    />
+        <result property="originalApproverId"    column="original_approver_id"    />
+        <result property="status"    column="status"    />
+        <result property="dueTime"    column="due_time"    />
+        <result property="assignedTime"    column="assigned_time"    />
+        <result property="handledTime"    column="handled_time"    />
+        <result property="createdAt"    column="created_at"    />
+        <result property="updatedAt"    column="updated_at"    />
+    </resultMap>
+
+    <sql id="selectApprovalTasksVo">
+        select id, instance_id, node_id, approver_id, approver_type, original_approver_id, status, due_time, assigned_time, handled_time, created_at, updated_at from approval_tasks
+    </sql>
+
+    <select id="selectApprovalTasksList" parameterType="ApprovalTasks" resultMap="ApprovalTasksResult">
+        <include refid="selectApprovalTasksVo"/>
+        <where>  
+            <if test="instanceId != null "> and instance_id = #{instanceId}</if>
+            <if test="nodeId != null "> and node_id = #{nodeId}</if>
+            <if test="approverId != null "> and approver_id = #{approverId}</if>
+            <if test="approverType != null  and approverType != ''"> and approver_type = #{approverType}</if>
+            <if test="originalApproverId != null "> and original_approver_id = #{originalApproverId}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="dueTime != null "> and due_time = #{dueTime}</if>
+            <if test="assignedTime != null "> and assigned_time = #{assignedTime}</if>
+            <if test="handledTime != null "> and handled_time = #{handledTime}</if>
+            <if test="createdAt != null "> and created_at = #{createdAt}</if>
+            <if test="updatedAt != null "> and updated_at = #{updatedAt}</if>
+        </where>
+    </select>
+    
+    <select id="selectApprovalTasksById" parameterType="Long" resultMap="ApprovalTasksResult">
+        <include refid="selectApprovalTasksVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertApprovalTasks" parameterType="ApprovalTasks" useGeneratedKeys="true" keyProperty="id">
+        insert into approval_tasks
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="instanceId != null">instance_id,</if>
+            <if test="nodeId != null">node_id,</if>
+            <if test="approverId != null">approver_id,</if>
+            <if test="approverType != null">approver_type,</if>
+            <if test="originalApproverId != null">original_approver_id,</if>
+            <if test="status != null">status,</if>
+            <if test="dueTime != null">due_time,</if>
+            <if test="assignedTime != null">assigned_time,</if>
+            <if test="handledTime != null">handled_time,</if>
+            <if test="createdAt != null">created_at,</if>
+            <if test="updatedAt != null">updated_at,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="instanceId != null">#{instanceId},</if>
+            <if test="nodeId != null">#{nodeId},</if>
+            <if test="approverId != null">#{approverId},</if>
+            <if test="approverType != null">#{approverType},</if>
+            <if test="originalApproverId != null">#{originalApproverId},</if>
+            <if test="status != null">#{status},</if>
+            <if test="dueTime != null">#{dueTime},</if>
+            <if test="assignedTime != null">#{assignedTime},</if>
+            <if test="handledTime != null">#{handledTime},</if>
+            <if test="createdAt != null">#{createdAt},</if>
+            <if test="updatedAt != null">#{updatedAt},</if>
+         </trim>
+    </insert>
+
+    <update id="updateApprovalTasks" parameterType="ApprovalTasks">
+        update approval_tasks
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="instanceId != null">instance_id = #{instanceId},</if>
+            <if test="nodeId != null">node_id = #{nodeId},</if>
+            <if test="approverId != null">approver_id = #{approverId},</if>
+            <if test="approverType != null">approver_type = #{approverType},</if>
+            <if test="originalApproverId != null">original_approver_id = #{originalApproverId},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="dueTime != null">due_time = #{dueTime},</if>
+            <if test="assignedTime != null">assigned_time = #{assignedTime},</if>
+            <if test="handledTime != null">handled_time = #{handledTime},</if>
+            <if test="createdAt != null">created_at = #{createdAt},</if>
+            <if test="updatedAt != null">updated_at = #{updatedAt},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteApprovalTasksById" parameterType="Long">
+        delete from approval_tasks where id = #{id}
+    </delete>
+
+    <delete id="deleteApprovalTasksByIds" parameterType="String">
+        delete from approval_tasks where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

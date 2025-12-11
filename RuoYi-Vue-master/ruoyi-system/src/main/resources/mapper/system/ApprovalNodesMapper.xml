@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.ApprovalNodesMapper">
+    
+    <resultMap type="ApprovalNodes" id="ApprovalNodesResult">
+        <result property="id"    column="id"    />
+        <result property="processId"    column="process_id"    />
+        <result property="nodeName"    column="node_name"    />
+        <result property="nodeOrder"    column="node_order"    />
+        <result property="approverType"    column="approver_type"    />
+        <result property="approverValue"    column="approver_value"    />
+        <result property="isRequired"    column="is_required"    />
+        <result property="canDelegate"    column="can_delegate"    />
+        <result property="timeoutHours"    column="timeout_hours"    />
+        <result property="conditions"    column="conditions"    />
+        <result property="createdAt"    column="created_at"    />
+    </resultMap>
+
+    <sql id="selectApprovalNodesVo">
+        select id, process_id, node_name, node_order, approver_type, approver_value, is_required, can_delegate, timeout_hours, conditions, created_at from approval_nodes
+    </sql>
+
+    <select id="selectApprovalNodesList" parameterType="ApprovalNodes" resultMap="ApprovalNodesResult">
+        <include refid="selectApprovalNodesVo"/>
+        <where>  
+            <if test="processId != null "> and process_id = #{processId}</if>
+            <if test="nodeName != null  and nodeName != ''"> and node_name like concat('%', #{nodeName}, '%')</if>
+            <if test="nodeOrder != null "> and node_order = #{nodeOrder}</if>
+            <if test="approverType != null  and approverType != ''"> and approver_type = #{approverType}</if>
+            <if test="approverValue != null  and approverValue != ''"> and approver_value = #{approverValue}</if>
+            <if test="isRequired != null "> and is_required = #{isRequired}</if>
+            <if test="canDelegate != null "> and can_delegate = #{canDelegate}</if>
+            <if test="timeoutHours != null "> and timeout_hours = #{timeoutHours}</if>
+            <if test="conditions != null  and conditions != ''"> and conditions = #{conditions}</if>
+            <if test="createdAt != null "> and created_at = #{createdAt}</if>
+        </where>
+    </select>
+    
+    <select id="selectApprovalNodesById" parameterType="Long" resultMap="ApprovalNodesResult">
+        <include refid="selectApprovalNodesVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertApprovalNodes" parameterType="ApprovalNodes" useGeneratedKeys="true" keyProperty="id">
+        insert into approval_nodes
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="processId != null">process_id,</if>
+            <if test="nodeName != null and nodeName != ''">node_name,</if>
+            <if test="nodeOrder != null">node_order,</if>
+            <if test="approverType != null and approverType != ''">approver_type,</if>
+            <if test="approverValue != null and approverValue != ''">approver_value,</if>
+            <if test="isRequired != null">is_required,</if>
+            <if test="canDelegate != null">can_delegate,</if>
+            <if test="timeoutHours != null">timeout_hours,</if>
+            <if test="conditions != null">conditions,</if>
+            <if test="createdAt != null">created_at,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="processId != null">#{processId},</if>
+            <if test="nodeName != null and nodeName != ''">#{nodeName},</if>
+            <if test="nodeOrder != null">#{nodeOrder},</if>
+            <if test="approverType != null and approverType != ''">#{approverType},</if>
+            <if test="approverValue != null and approverValue != ''">#{approverValue},</if>
+            <if test="isRequired != null">#{isRequired},</if>
+            <if test="canDelegate != null">#{canDelegate},</if>
+            <if test="timeoutHours != null">#{timeoutHours},</if>
+            <if test="conditions != null">#{conditions},</if>
+            <if test="createdAt != null">#{createdAt},</if>
+         </trim>
+    </insert>
+
+    <update id="updateApprovalNodes" parameterType="ApprovalNodes">
+        update approval_nodes
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="processId != null">process_id = #{processId},</if>
+            <if test="nodeName != null and nodeName != ''">node_name = #{nodeName},</if>
+            <if test="nodeOrder != null">node_order = #{nodeOrder},</if>
+            <if test="approverType != null and approverType != ''">approver_type = #{approverType},</if>
+            <if test="approverValue != null and approverValue != ''">approver_value = #{approverValue},</if>
+            <if test="isRequired != null">is_required = #{isRequired},</if>
+            <if test="canDelegate != null">can_delegate = #{canDelegate},</if>
+            <if test="timeoutHours != null">timeout_hours = #{timeoutHours},</if>
+            <if test="conditions != null">conditions = #{conditions},</if>
+            <if test="createdAt != null">created_at = #{createdAt},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteApprovalNodesById" parameterType="Long">
+        delete from approval_nodes where id = #{id}
+    </delete>
+
+    <delete id="deleteApprovalNodesByIds" parameterType="String">
+        delete from approval_nodes where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

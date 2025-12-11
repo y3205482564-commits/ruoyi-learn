@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.ApprovalInstancesMapper">
+    
+    <resultMap type="ApprovalInstances" id="ApprovalInstancesResult">
+        <result property="id"    column="id"    />
+        <result property="instanceNo"    column="instance_no"    />
+        <result property="processId"    column="process_id"    />
+        <result property="title"    column="title"    />
+        <result property="applicantId"    column="applicant_id"    />
+        <result property="applicantDeptId"    column="applicant_dept_id"    />
+        <result property="formData"    column="form_data"    />
+        <result property="attachments"    column="attachments"    />
+        <result property="currentStatus"    column="current_status"    />
+        <result property="currentNodeId"    column="current_node_id"    />
+        <result property="priority"    column="priority"    />
+        <result property="submitTime"    column="submit_time"    />
+        <result property="completeTime"    column="complete_time"    />
+        <result property="createdAt"    column="created_at"    />
+        <result property="updatedAt"    column="updated_at"    />
+    </resultMap>
+
+    <sql id="selectApprovalInstancesVo">
+        select id, instance_no, process_id, title, applicant_id, applicant_dept_id, form_data, attachments, current_status, current_node_id, priority, submit_time, complete_time, created_at, updated_at from approval_instances
+    </sql>
+
+    <select id="selectApprovalInstancesList" parameterType="ApprovalInstances" resultMap="ApprovalInstancesResult">
+        <include refid="selectApprovalInstancesVo"/>
+        <where>  
+            <if test="instanceNo != null  and instanceNo != ''"> and instance_no = #{instanceNo}</if>
+            <if test="processId != null "> and process_id = #{processId}</if>
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="applicantId != null "> and applicant_id = #{applicantId}</if>
+            <if test="applicantDeptId != null "> and applicant_dept_id = #{applicantDeptId}</if>
+            <if test="formData != null  and formData != ''"> and form_data = #{formData}</if>
+            <if test="attachments != null  and attachments != ''"> and attachments = #{attachments}</if>
+            <if test="currentStatus != null  and currentStatus != ''"> and current_status = #{currentStatus}</if>
+            <if test="currentNodeId != null "> and current_node_id = #{currentNodeId}</if>
+            <if test="priority != null  and priority != ''"> and priority = #{priority}</if>
+            <if test="submitTime != null "> and submit_time = #{submitTime}</if>
+            <if test="completeTime != null "> and complete_time = #{completeTime}</if>
+            <if test="createdAt != null "> and created_at = #{createdAt}</if>
+            <if test="updatedAt != null "> and updated_at = #{updatedAt}</if>
+        </where>
+    </select>
+    
+    <select id="selectApprovalInstancesById" parameterType="Long" resultMap="ApprovalInstancesResult">
+        <include refid="selectApprovalInstancesVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertApprovalInstances" parameterType="ApprovalInstances" useGeneratedKeys="true" keyProperty="id">
+        insert into approval_instances
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="instanceNo != null and instanceNo != ''">instance_no,</if>
+            <if test="processId != null">process_id,</if>
+            <if test="title != null and title != ''">title,</if>
+            <if test="applicantId != null">applicant_id,</if>
+            <if test="applicantDeptId != null">applicant_dept_id,</if>
+            <if test="formData != null and formData != ''">form_data,</if>
+            <if test="attachments != null">attachments,</if>
+            <if test="currentStatus != null">current_status,</if>
+            <if test="currentNodeId != null">current_node_id,</if>
+            <if test="priority != null">priority,</if>
+            <if test="submitTime != null">submit_time,</if>
+            <if test="completeTime != null">complete_time,</if>
+            <if test="createdAt != null">created_at,</if>
+            <if test="updatedAt != null">updated_at,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="instanceNo != null and instanceNo != ''">#{instanceNo},</if>
+            <if test="processId != null">#{processId},</if>
+            <if test="title != null and title != ''">#{title},</if>
+            <if test="applicantId != null">#{applicantId},</if>
+            <if test="applicantDeptId != null">#{applicantDeptId},</if>
+            <if test="formData != null and formData != ''">#{formData},</if>
+            <if test="attachments != null">#{attachments},</if>
+            <if test="currentStatus != null">#{currentStatus},</if>
+            <if test="currentNodeId != null">#{currentNodeId},</if>
+            <if test="priority != null">#{priority},</if>
+            <if test="submitTime != null">#{submitTime},</if>
+            <if test="completeTime != null">#{completeTime},</if>
+            <if test="createdAt != null">#{createdAt},</if>
+            <if test="updatedAt != null">#{updatedAt},</if>
+         </trim>
+    </insert>
+
+    <update id="updateApprovalInstances" parameterType="ApprovalInstances">
+        update approval_instances
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="instanceNo != null and instanceNo != ''">instance_no = #{instanceNo},</if>
+            <if test="processId != null">process_id = #{processId},</if>
+            <if test="title != null and title != ''">title = #{title},</if>
+            <if test="applicantId != null">applicant_id = #{applicantId},</if>
+            <if test="applicantDeptId != null">applicant_dept_id = #{applicantDeptId},</if>
+            <if test="formData != null and formData != ''">form_data = #{formData},</if>
+            <if test="attachments != null">attachments = #{attachments},</if>
+            <if test="currentStatus != null">current_status = #{currentStatus},</if>
+            <if test="currentNodeId != null">current_node_id = #{currentNodeId},</if>
+            <if test="priority != null">priority = #{priority},</if>
+            <if test="submitTime != null">submit_time = #{submitTime},</if>
+            <if test="completeTime != null">complete_time = #{completeTime},</if>
+            <if test="createdAt != null">created_at = #{createdAt},</if>
+            <if test="updatedAt != null">updated_at = #{updatedAt},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteApprovalInstancesById" parameterType="Long">
+        delete from approval_instances where id = #{id}
+    </delete>
+
+    <delete id="deleteApprovalInstancesByIds" parameterType="String">
+        delete from approval_instances where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
