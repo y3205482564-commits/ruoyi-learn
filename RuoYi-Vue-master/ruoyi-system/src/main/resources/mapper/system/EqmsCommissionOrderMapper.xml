@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.EqmsCommissionOrderMapper">
+    
+    <resultMap type="EqmsCommissionOrder" id="EqmsCommissionOrderResult">
+        <result property="id"    column="id"    />
+        <result property="commissionNo"    column="commission_no"    />
+        <result property="planNo"    column="plan_no"    />
+        <result property="standardItemNo"    column="standard_item_no"    />
+        <result property="equipmentName"    column="equipment_name"    />
+        <result property="projectName"    column="project_name"    />
+        <result property="expectedStartDate"    column="expected_start_date"    />
+        <result property="expectedEndDate"    column="expected_end_date"    />
+        <result property="repairReason"    column="repair_reason"    />
+        <result property="constructionTeamCode"    column="construction_team_code"    />
+        <result property="constructionTeamName"    column="construction_team_name"    />
+        <result property="projectCategory"    column="project_category"    />
+        <result property="commissionDate"    column="commission_date"    />
+        <result property="commissioner"    column="commissioner"    />
+        <result property="inspectorName"    column="inspector_name"    />
+        <result property="status"    column="status"    />
+        <result property="syncStatus"    column="sync_status"    />
+        <result property="syncTime"    column="sync_time"    />
+        <result property="syncMessage"    column="sync_message"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectEqmsCommissionOrderVo">
+        select id, commission_no, plan_no, standard_item_no, equipment_name, project_name, expected_start_date, expected_end_date, repair_reason, construction_team_code, construction_team_name, project_category, commission_date, commissioner, inspector_name, status, sync_status, sync_time, sync_message, create_by, create_time, update_by, update_time, remark from eqms_commission_order
+    </sql>
+
+    <select id="selectEqmsCommissionOrderList" parameterType="EqmsCommissionOrder" resultMap="EqmsCommissionOrderResult">
+        <include refid="selectEqmsCommissionOrderVo"/>
+        <where>  
+            <if test="commissionNo != null  and commissionNo != ''"> and commission_no = #{commissionNo}</if>
+            <if test="planNo != null  and planNo != ''"> and plan_no = #{planNo}</if>
+            <if test="standardItemNo != null  and standardItemNo != ''"> and standard_item_no = #{standardItemNo}</if>
+            <if test="equipmentName != null  and equipmentName != ''"> and equipment_name like concat('%', #{equipmentName}, '%')</if>
+            <if test="projectName != null  and projectName != ''"> and project_name like concat('%', #{projectName}, '%')</if>
+            <if test="expectedStartDate != null "> and expected_start_date = #{expectedStartDate}</if>
+            <if test="expectedEndDate != null "> and expected_end_date = #{expectedEndDate}</if>
+            <if test="repairReason != null  and repairReason != ''"> and repair_reason = #{repairReason}</if>
+            <if test="constructionTeamCode != null  and constructionTeamCode != ''"> and construction_team_code = #{constructionTeamCode}</if>
+            <if test="constructionTeamName != null  and constructionTeamName != ''"> and construction_team_name like concat('%', #{constructionTeamName}, '%')</if>
+            <if test="projectCategory != null  and projectCategory != ''"> and project_category = #{projectCategory}</if>
+            <if test="commissionDate != null "> and commission_date = #{commissionDate}</if>
+            <if test="commissioner != null  and commissioner != ''"> and commissioner = #{commissioner}</if>
+            <if test="inspectorName != null  and inspectorName != ''"> and inspector_name like concat('%', #{inspectorName}, '%')</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="syncStatus != null  and syncStatus != ''"> and sync_status = #{syncStatus}</if>
+            <if test="syncTime != null "> and sync_time = #{syncTime}</if>
+            <if test="syncMessage != null  and syncMessage != ''"> and sync_message = #{syncMessage}</if>
+        </where>
+    </select>
+    
+    <select id="selectEqmsCommissionOrderById" parameterType="Long" resultMap="EqmsCommissionOrderResult">
+        <include refid="selectEqmsCommissionOrderVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertEqmsCommissionOrder" parameterType="EqmsCommissionOrder" useGeneratedKeys="true" keyProperty="id">
+        insert into eqms_commission_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="commissionNo != null and commissionNo != ''">commission_no,</if>
+            <if test="planNo != null">plan_no,</if>
+            <if test="standardItemNo != null">standard_item_no,</if>
+            <if test="equipmentName != null">equipment_name,</if>
+            <if test="projectName != null">project_name,</if>
+            <if test="expectedStartDate != null">expected_start_date,</if>
+            <if test="expectedEndDate != null">expected_end_date,</if>
+            <if test="repairReason != null">repair_reason,</if>
+            <if test="constructionTeamCode != null">construction_team_code,</if>
+            <if test="constructionTeamName != null">construction_team_name,</if>
+            <if test="projectCategory != null">project_category,</if>
+            <if test="commissionDate != null">commission_date,</if>
+            <if test="commissioner != null">commissioner,</if>
+            <if test="inspectorName != null">inspector_name,</if>
+            <if test="status != null">status,</if>
+            <if test="syncStatus != null">sync_status,</if>
+            <if test="syncTime != null">sync_time,</if>
+            <if test="syncMessage != null">sync_message,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="commissionNo != null and commissionNo != ''">#{commissionNo},</if>
+            <if test="planNo != null">#{planNo},</if>
+            <if test="standardItemNo != null">#{standardItemNo},</if>
+            <if test="equipmentName != null">#{equipmentName},</if>
+            <if test="projectName != null">#{projectName},</if>
+            <if test="expectedStartDate != null">#{expectedStartDate},</if>
+            <if test="expectedEndDate != null">#{expectedEndDate},</if>
+            <if test="repairReason != null">#{repairReason},</if>
+            <if test="constructionTeamCode != null">#{constructionTeamCode},</if>
+            <if test="constructionTeamName != null">#{constructionTeamName},</if>
+            <if test="projectCategory != null">#{projectCategory},</if>
+            <if test="commissionDate != null">#{commissionDate},</if>
+            <if test="commissioner != null">#{commissioner},</if>
+            <if test="inspectorName != null">#{inspectorName},</if>
+            <if test="status != null">#{status},</if>
+            <if test="syncStatus != null">#{syncStatus},</if>
+            <if test="syncTime != null">#{syncTime},</if>
+            <if test="syncMessage != null">#{syncMessage},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateEqmsCommissionOrder" parameterType="EqmsCommissionOrder">
+        update eqms_commission_order
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="commissionNo != null and commissionNo != ''">commission_no = #{commissionNo},</if>
+            <if test="planNo != null">plan_no = #{planNo},</if>
+            <if test="standardItemNo != null">standard_item_no = #{standardItemNo},</if>
+            <if test="equipmentName != null">equipment_name = #{equipmentName},</if>
+            <if test="projectName != null">project_name = #{projectName},</if>
+            <if test="expectedStartDate != null">expected_start_date = #{expectedStartDate},</if>
+            <if test="expectedEndDate != null">expected_end_date = #{expectedEndDate},</if>
+            <if test="repairReason != null">repair_reason = #{repairReason},</if>
+            <if test="constructionTeamCode != null">construction_team_code = #{constructionTeamCode},</if>
+            <if test="constructionTeamName != null">construction_team_name = #{constructionTeamName},</if>
+            <if test="projectCategory != null">project_category = #{projectCategory},</if>
+            <if test="commissionDate != null">commission_date = #{commissionDate},</if>
+            <if test="commissioner != null">commissioner = #{commissioner},</if>
+            <if test="inspectorName != null">inspector_name = #{inspectorName},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="syncStatus != null">sync_status = #{syncStatus},</if>
+            <if test="syncTime != null">sync_time = #{syncTime},</if>
+            <if test="syncMessage != null">sync_message = #{syncMessage},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteEqmsCommissionOrderById" parameterType="Long">
+        delete from eqms_commission_order where id = #{id}
+    </delete>
+
+    <delete id="deleteEqmsCommissionOrderByIds" parameterType="String">
+        delete from eqms_commission_order where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
