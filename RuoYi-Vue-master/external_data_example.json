@@ -1,0 +1,18 @@
+{
+  "commissionNo": "EXT202512170002",
+  "planNo": "PLAN202512170002",
+  "standardItemNo": "STD202512170002",
+  "equipmentName": "高压泵",
+  "projectName": "泵站维修项目",
+  "expectedStartDate": "2025-12-20",
+  "expectedEndDate": "2025-12-25",
+  "repairReason": "泵体磨损需要更换",
+  "constructionTeamCode": "TEAM002",
+  "constructionTeamName": "维修二班",
+  "projectCategory": "机械维修",
+  "commissionDate": "2025-12-17",
+  "commissioner": "王五",
+  "inspectorName": "赵六",
+  "externalSystemId": "EQMS_SYSTEM_002",
+  "dataSource": "EQMS外部系统"
+}

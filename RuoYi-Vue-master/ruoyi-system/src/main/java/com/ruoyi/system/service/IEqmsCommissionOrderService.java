@@ -2,6 +2,7 @@ package com.ruoyi.system.service;
 
 import java.util.List;
 import com.ruoyi.system.domain.EqmsCommissionOrder;
+import com.ruoyi.system.domain.vo.ExternalEqmsData;
 
 /**
  * EQMS委托单信息Service接口
@@ -58,4 +59,12 @@ public interface IEqmsCommissionOrderService
      * @return 结果
      */
     public int deleteEqmsCommissionOrderById(Long id);
+
+    /**
+     * 接收外部系统EQMS数据
+     * 
+     * @param externalData 外部系统数据
+     * @return 结果
+     */
+    public int receiveExternalData(ExternalEqmsData externalData);
 }

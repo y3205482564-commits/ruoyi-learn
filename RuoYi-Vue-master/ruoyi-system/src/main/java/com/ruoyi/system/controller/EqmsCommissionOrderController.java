@@ -2,6 +2,9 @@ package com.ruoyi.system.controller;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import com.ruoyi.common.annotation.Anonymous;
+import com.ruoyi.system.domain.vo.ExternalEqmsData;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -83,7 +86,7 @@ public class EqmsCommissionOrderController extends BaseController
     /**
      * 修改EQMS委托单信息
      */
-    @PreAuthorize("@ss.hasPermi('system:eqmsorder:edit')")
+    //@PreAuthorize("@ss.hasPermi('system:eqmsorder:edit')")
     @Log(title = "EQMS委托单信息", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody EqmsCommissionOrder eqmsCommissionOrder)
@@ -100,5 +103,17 @@ public class EqmsCommissionOrderController extends BaseController
     public AjaxResult remove(@PathVariable Long[] ids)
     {
         return toAjax(eqmsCommissionOrderService.deleteEqmsCommissionOrderByIds(ids));
+    }
+
+    /**
+     * 接收外部系统EQMS数据
+     */
+
+    //@PreAuthorize("@ss.hasPermi('system:eqmsorder:add')")
+    @Log(title = "外部系统数据接收", businessType = BusinessType.INSERT)
+    @PostMapping("/external/receive")
+    public AjaxResult receiveExternalData(@RequestBody ExternalEqmsData externalData)
+    {
+        return toAjax(eqmsCommissionOrderService.receiveExternalData(externalData));
     }
 }

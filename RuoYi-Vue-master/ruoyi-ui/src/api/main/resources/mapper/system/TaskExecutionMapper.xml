@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.TaskExecutionMapper">
+    
+    <resultMap type="TaskExecution" id="TaskExecutionResult">
+        <result property="executionId"    column="execution_id"    />
+        <result property="taskId"    column="task_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="startTime"    column="start_time"    />
+        <result property="endTime"    column="end_time"    />
+        <result property="actualHours"    column="actual_hours"    />
+        <result property="workContent"    column="work_content"    />
+        <result property="materialsUsed"    column="materials_used"    />
+        <result property="problemsFound"    column="problems_found"    />
+        <result property="solutions"    column="solutions"    />
+        <result property="status"    column="status"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectTaskExecutionVo">
+        select execution_id, task_id, user_id, start_time, end_time, actual_hours, work_content, materials_used, problems_found, solutions, status, create_by, create_time, update_by, update_time from task_execution
+    </sql>
+
+    <select id="selectTaskExecutionList" parameterType="TaskExecution" resultMap="TaskExecutionResult">
+        <include refid="selectTaskExecutionVo"/>
+        <where>  
+            <if test="taskId != null "> and task_id = #{taskId}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="startTime != null "> and start_time = #{startTime}</if>
+            <if test="endTime != null "> and end_time = #{endTime}</if>
+            <if test="actualHours != null "> and actual_hours = #{actualHours}</if>
+            <if test="workContent != null  and workContent != ''"> and work_content = #{workContent}</if>
+            <if test="materialsUsed != null  and materialsUsed != ''"> and materials_used = #{materialsUsed}</if>
+            <if test="problemsFound != null  and problemsFound != ''"> and problems_found = #{problemsFound}</if>
+            <if test="solutions != null  and solutions != ''"> and solutions = #{solutions}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectTaskExecutionByExecutionId" parameterType="Long" resultMap="TaskExecutionResult">
+        <include refid="selectTaskExecutionVo"/>
+        where execution_id = #{executionId}
+    </select>
+
+    <insert id="insertTaskExecution" parameterType="TaskExecution" useGeneratedKeys="true" keyProperty="executionId">
+        insert into task_execution
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="taskId != null">task_id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="startTime != null">start_time,</if>
+            <if test="endTime != null">end_time,</if>
+            <if test="actualHours != null">actual_hours,</if>
+            <if test="workContent != null">work_content,</if>
+            <if test="materialsUsed != null">materials_used,</if>
+            <if test="problemsFound != null">problems_found,</if>
+            <if test="solutions != null">solutions,</if>
+            <if test="status != null">status,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="taskId != null">#{taskId},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="startTime != null">#{startTime},</if>
+            <if test="endTime != null">#{endTime},</if>
+            <if test="actualHours != null">#{actualHours},</if>
+            <if test="workContent != null">#{workContent},</if>
+            <if test="materialsUsed != null">#{materialsUsed},</if>
+            <if test="problemsFound != null">#{problemsFound},</if>
+            <if test="solutions != null">#{solutions},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTaskExecution" parameterType="TaskExecution">
+        update task_execution
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="taskId != null">task_id = #{taskId},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="startTime != null">start_time = #{startTime},</if>
+            <if test="endTime != null">end_time = #{endTime},</if>
+            <if test="actualHours != null">actual_hours = #{actualHours},</if>
+            <if test="workContent != null">work_content = #{workContent},</if>
+            <if test="materialsUsed != null">materials_used = #{materialsUsed},</if>
+            <if test="problemsFound != null">problems_found = #{problemsFound},</if>
+            <if test="solutions != null">solutions = #{solutions},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where execution_id = #{executionId}
+    </update>
+
+    <delete id="deleteTaskExecutionByExecutionId" parameterType="Long">
+        delete from task_execution where execution_id = #{executionId}
+    </delete>
+
+    <delete id="deleteTaskExecutionByExecutionIds" parameterType="String">
+        delete from task_execution where execution_id in 
+        <foreach item="executionId" collection="array" open="(" separator="," close=")">
+            #{executionId}
+        </foreach>
+    </delete>
+</mapper>
